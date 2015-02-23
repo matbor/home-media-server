@@ -1,0 +1,50 @@
+---
+- name: Create user that will run couchpotato.
+  user: name={{ couchpotato_user }} comment="Couchpotato user"
+
+- name: Install dependencies.
+  apt: name={{ item }} state=present
+  with_items:
+    - git-core
+
+- name: Create installation directory.
+  file: path={{ couchpotato_dir }} owner={{ couchpotato_user }} group={{ couchpotato_user }} mode=0755 state=directory
+
+- name: Clone couchpotato repository.
+  git: repo=https://github.com/RuudBurger/CouchPotatoServer.git dest={{ couchpotato_dir }}
+
+- name: Fix permissions.
+  file: path={{ couchpotato_dir }} owner={{ couchpotato_user }} group={{ couchpotato_user }} recurse=yes
+
+- name: Intall init script.
+  command: cp {{ couchpotato_dir }}/init/ubuntu /etc/init.d/couchpotato creates=/etc/init.d/couchpotato
+
+- name: Set permissions for init script.
+  file: path=/etc/init.d/couchpotato mode=0744 owner=root group=root
+
+- name: Update Couchpotato Daemon configuration
+  template: src=etc_default_couchpotato.j2 dest=/etc/default/couchpotato owner=root group=root mode=0644
+
+- name: Create CouchPotato database and settings directory
+  file: path=/var/couchpotato state=directory owner={{ couchpotato_user }} group=root mode=0755
+
+- name: Start and enable couchpotato service.
+  service: name=couchpotato state=started enabled=yes
+
+- name: Make sure Couchpotato is stopped before modifications
+  service: name=couchpotato state=stopped
+
+- name: Update CouchPotato configuration
+  template: src=var_couchpotato_settings.conf.j2 dest=/var/couchpotato/settings.conf owner={{ couchpotato_user }} group={{ couchpotato_user }}
+
+- name: Upload CouchPotato Database
+  copy: src=couchpotato.db dest=/var/couchpotato/couchpotato.db owner={{ couchpotato_user }} group={{ couchpotato_user }}
+
+- name: Create CouchPotato Media folders
+  file: path={{ item }} state=directory recurse=yes owner={{ couchpotato_user }} group={{ couchpotato_user }} mode=0775
+  with_items:
+    - "{{ media_path }}"
+    - "{{ media_path }}/{{ movies_folder }}"
+
+- name: Start Couchpotato and make sure it starts on boot
+  service: name=couchpotato state=started

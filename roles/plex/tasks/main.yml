@@ -1,0 +1,7 @@
+- name: Download Plex.
+  get_url: url={{ plex_download_url | mandatory }} dest=/tmp/plex.deb
+
+- name: Install Plex.
+  apt: deb=/tmp/plex.deb
+  sudo: yes
+

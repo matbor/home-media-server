@@ -1,0 +1,12 @@
+description "Couchpotato Upstart script"
+
+start on (filesystem and net-device-up)
+stop on runlevel [!2345]
+
+chdir {{ couchpotato_dir }}/checkout
+setuid {{ couchpotato_user }}
+setgid {{ couchpotato_user }}
+
+exec python CouchPotato.py
+
+emits couchpotato-running
