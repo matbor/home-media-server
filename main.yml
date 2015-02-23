@@ -9,11 +9,14 @@
     couchpotato_user: media
     sickbeard_user: media
     htpc_manager_user: media
+    nzbtomedia_user: media
 
   roles:
     - plex
     - deluge
     - couchpotato
     - sickbeard
+    # -------------
+    - nzbtomedia
     - htpc-manager
 
