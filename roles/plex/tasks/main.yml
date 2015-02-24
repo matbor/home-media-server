@@ -4,4 +4,3 @@
 - name: Install Plex.
   apt: deb=/tmp/plex.deb
   sudo: yes
-
