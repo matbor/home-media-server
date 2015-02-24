@@ -62,8 +62,9 @@
 - name: Update Deluge credentials
   lineinfile: dest={{ deluged_path }}/config/auth regexp='^localclient' line='localclient:{{ deluged_localclient_password }}:10' owner={{ deluged_user }} group={{ deluged_user }} mode=0600 create=yes
 
-- name: Make sure Deluge Daemon is running and enabled on boot
-  service: name=deluged state=started enabled=yes
+- name: Restart deluged daemon after updating credentials.
+  service: name=deluged state=restarted
+  when: deluged_core_update.changed
 
 - name: Make sure Deluge Web is running and enabled on boot
-  service: name=deluge-web state=started enabled=yes
+  service: name=deluge-web state=restarted enabled=yes

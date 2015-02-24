@@ -1,5 +1,4 @@
 ---
-couchpotato_user: couchpotato
 couchpotato_dir: '/opt/couchpotato'
 couchpotato_port: 5050
 couchpotato_url_base: '/couchpotato'
