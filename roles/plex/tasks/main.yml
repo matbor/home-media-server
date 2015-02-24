@@ -4,3 +4,24 @@
 - name: Install Plex.
   apt: deb=/tmp/plex.deb
   sudo: yes
+
+- name: Install Apache
+  apt: name=apache2 state=installed
+
+- name: Enable apache proxy modules
+  command: a2enmod {{ item }}
+  with_items:
+    - proxy
+    - proxy_http
+
+- name: Disable default apache site
+  file: path=/etc/apache2/sites-enabled/000-default.conf state=absent
+
+- name: Add Plex to apache sites-available.
+  template: src=apache_plex.conf dest=/etc/apache2/sites-available/plex.conf
+
+- name: Enable Plex apache site.
+  file: src=/etc/apache2/sites-available/plex.conf dest=/etc/apache2/sites-enabled/plex.conf state=link
+
+- name: Restart Apache.
+  service: name=apache2 state=restarted

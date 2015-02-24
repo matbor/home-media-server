@@ -6,3 +6,4 @@ htpc_manager_path: /opt/htpc-manager
 htpc_manager_version: HEAD
 
 htpc_manager_use_hostnames: True
+htpc_manager_reverse_proxy_port: 81
