@@ -64,7 +64,7 @@ INSERT INTO "setting" VALUES(22,'git_path','git');
 INSERT INTO "setting" VALUES(23,'app_ssl_key','');
 INSERT INTO "setting" VALUES(24,'app_host','0.0.0.0');
 INSERT INTO "setting" VALUES(25,'app_ssl_cert','');
-INSERT INTO "setting" VALUES(26,'app_port','8085');
+INSERT INTO "setting" VALUES(26,'app_port','{{htpc_manager_port}}');
 INSERT INTO "setting" VALUES(27,'app_username','');
 {% if sickbeard_enabled is defined and sickbeard_enabled %}
 INSERT INTO "setting" VALUES(28,'sickbeard_enable','on');

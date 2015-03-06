@@ -14,3 +14,4 @@ downloads_path: "{{ media_path }}/downloads"           # Downloads path
 tv_folder: tv                                          # TV Shows directory
 
 sickbeard_host: "{{ ansible_default_ipv4.address }}"
+sickbeard_port: 8081
