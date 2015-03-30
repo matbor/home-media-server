@@ -12,6 +12,12 @@
 - name: Ensure sickbeard user is created.
   user: name={{ sickbeard_user }} group={{ sickbeard_user }} state=present
 
+- name: Create installation directory.
+  file: path={{ item }} owner={{ sickbeard_user }} group={{ sickbeard_user }} mode=0755 state=directory
+  with_items:
+    - /opt/sickbeard
+    - /var/run/sickbeard
+
 - name: Get SickBeard Code from GitHub
   git: repo={{ sickbeard_repo }} dest=/opt/sickbeard version={{ sickbeard_branch }}
 
